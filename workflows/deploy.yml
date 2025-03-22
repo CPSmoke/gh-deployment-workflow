@@ -8,26 +8,23 @@ on:
       - index.html
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - name: Setup Hugo
+      uses: peaceiris/hugo-actions/setup-hugo@v2
       with:
-        node-version: '14'
+        hugo-version: 'latest'
 
-    - name: Install Dependencies (optional, for static site generators)
-      run: npm install
-
-    - name: Build site (if using a static site generator)
-      run: npm run build  # replace it with the build command for your generator
+    - name: Build
+      run: hugo
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./  # specify your build directory if you are using the generator.
+        publish_dir: ./public
